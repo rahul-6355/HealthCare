@@ -18,7 +18,26 @@ connectCloudinary();
 // middleware
 
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
+
+app.use(cors({
+  origin: [
+    'https://healthcare-frontend-0czj.onrender.com', // frontend
+    'https://healthcare-admin-k523.onrender.com'    // admin
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
+
+// Handle preflight
+app.options('*', cors({
+  origin: [
+    'https://healthcare-frontend-0czj.onrender.com',
+    'https://healthcare-admin-k523.onrender.com'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
 
 
 // api endpoints
