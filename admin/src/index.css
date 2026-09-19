@@ -4,10 +4,54 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar{
-    @apply hidden;
+@layer base {
+    :root {
+        color: #17324D;
+        background: #F4F8F6;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+        min-width: 320px;
+        background: #F4F8F6;
+        background-image: radial-gradient(circle at 100% 0%, rgba(15, 118, 110, 0.1), transparent 25rem);
+    }
+
+    h1, h2, h3, h4 {
+        font-family: Montserrat, sans-serif;
+        letter-spacing: 0;
+    }
 }
 
-*{
-    font-family: Outfit;
+@layer components {
+    .bg-primary {
+        background-image: linear-gradient(120deg, #0F766E 0%, #155E75 100%);
+    }
+
+    button, a {
+        transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+    }
+
+    button:hover, a:hover {
+        transform: translateY(-1px);
+    }
+
+    input, textarea, select {
+        outline: none;
+        transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        border-color: #0F766E;
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9CCBC1;
+    border-radius: 8px;
 }

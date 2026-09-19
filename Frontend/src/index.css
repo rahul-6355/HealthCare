@@ -3,8 +3,47 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-    font-family: outfit;
+@layer base {
+    :root {
+        color: #17324D;
+        background: #FBFCFA;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+        min-width: 320px;
+        background: #FBFCFA;
+        background-image: radial-gradient(circle at 90% 0%, rgba(15, 118, 110, 0.09), transparent 28rem), radial-gradient(circle at 0% 42%, rgba(245, 158, 114, 0.08), transparent 24rem);
+    }
+
+    h1, h2, h3, h4 {
+        font-family: Montserrat, sans-serif;
+        letter-spacing: 0;
+    }
+}
+
+@layer components {
+    .bg-primary {
+        background-image: linear-gradient(120deg, #0F766E 0%, #155E75 100%);
+    }
+
+    button, a {
+        transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+    }
+
+    button:hover, a:hover {
+        transform: translateY(-1px);
+    }
+
+    input, textarea, select {
+        outline: none;
+        transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        border-color: #0F766E;
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+    }
 }
 
 .active hr{

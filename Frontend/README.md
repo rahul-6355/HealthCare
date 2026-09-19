@@ -1,5 +1,19 @@
 # React + Vite
 
+## Google patient signup
+
+Create a Google OAuth Web application client in Google Cloud Console and add the same client ID to:
+
+```env
+# Frontend/.env
+VITE_GOOGLE_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+
+# backend/.env
+GOOGLE_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+```
+
+Add the Frontend development URL (for example, `http://localhost:5173`) to the OAuth client's authorized JavaScript origins. The Google button appears on the patient Sign Up screen once `VITE_GOOGLE_CLIENT_ID` is configured.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

@@ -12,6 +12,7 @@ const MyAppointments = () => {
     const {doctors,backendUrl,token,getDoctorData} = useContext(AppContext);
 
     const [appointments, setAppointments] = useState([]);
+    const [payingAppointment, setPayingAppointment] = useState(null);
     const months =["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
     const navigate = useNavigate()
@@ -58,7 +59,22 @@ const MyAppointments = () => {
       }
     }
 
-    const initPay = (order) =>{
+    const loadRazorpay = () => new Promise((resolve, reject) => {
+      if (window.Razorpay) {
+        resolve()
+        return
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+      script.onload = () => resolve()
+      script.onerror = () => reject(new Error('Unable to load Razorpay checkout'))
+      document.body.appendChild(script)
+    })
+
+    const initPay = async (order) =>{
+
+     await loadRazorpay()
 
      const options ={
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -78,8 +94,9 @@ const MyAppointments = () => {
             toast.success(data.message)
             getUserAppointments()
             navigate('/my-appointments')
-           
-            } 
+          } else {
+            toast.error(data.message || 'Payment verification failed')
+          }
           
         } catch (error) {
           console.log(error.message)
@@ -97,14 +114,18 @@ const MyAppointments = () => {
     const appointmentRazorpay = async (appointmentId)=>{
 
       try {
+        setPayingAppointment(appointmentId)
         const {data} = await axios.post(backendUrl +'/api/user/payment-razorpay',{appointmentId},{headers:{token}})
      
         if(data.success){
-          console.log(data.order)
-          initPay(data.order)
+          await initPay(data.order)
+        } else {
+          toast.error(data.message || 'Unable to start payment')
         }
       } catch (error) {
-        
+        toast.error(error.response?.data?.message || error.message || 'Unable to start payment')
+      } finally {
+        setPayingAppointment(null)
       }
 
     }
@@ -140,7 +161,7 @@ const MyAppointments = () => {
                <div></div>
                <div className='flex flex-col gap-2 justify-end'>
                 {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-stone-500 bg-indigo-50'>Paid</button>}
-               {!item.cancelled && !item.payment && !item.isCompleted &&  <button onClick={()=>appointmentRazorpay(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>} 
+               {!item.cancelled && !item.payment && !item.isCompleted &&  <button disabled={payingAppointment === item._id} onClick={()=>appointmentRazorpay(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-primary hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-wait'>{payingAppointment === item._id ? 'Opening payment...' : 'Pay Online'}</button>} 
                 {!item.cancelled && !item.isCompleted && <button onClick={()=>CancelAppointment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-primary hover:text-white transition-all duration-300'>Cancel appointment</button>}
                 {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
                 {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Completed</button>}

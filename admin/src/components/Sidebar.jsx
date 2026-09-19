@@ -10,26 +10,26 @@ const Sidebar = () => {
     const {dToken} = useContext(DoctorContext)
 
     return (
-        <div className='min-h-screen bg-white border-r'>
+        <div className='min-h-screen bg-white/80 border-r border-teal-100'>
             {
-                aToken && <ul className='text-[#515151] mt-5'>
+                aToken && <ul className='text-ink/70 mt-5'>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/admin-appointments'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/admin-appointments'}>
                         <img src={assets.home_icon} alt="" />
                         <p className='hidden md:block'>Dashboard</p>
                     </NavLink>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/all-appointments'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/all-appointments'}>
                         <img src={assets.appointment_icon} alt="" />
                         <p className='hidden md:block'>Appointments</p>
                     </NavLink>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/add-doctor'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/add-doctor'}>
                         <img src={assets.add_icon} alt="" />
                         <p className='hidden md:block'>Add Doctor</p>
                     </NavLink>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/doctor-list'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/doctor-list'}>
                         <img src={assets.people_icon} alt="" />
                         <p className='hidden md:block'>Doctors List</p>
                     </NavLink>
@@ -38,19 +38,19 @@ const Sidebar = () => {
             }
 
               {
-                dToken && <ul className='text-[#515151] mt-5'>
+                dToken && <ul className='text-ink/70 mt-5'>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/doctor-dashboard'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/doctor-dashboard'}>
                         <img src={assets.home_icon} alt="" />
                         <p className='hidden md:block'>Dashboard</p>
                     </NavLink>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/doctor-appointments'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/doctor-appointments'}>
                         <img src={assets.appointment_icon} alt="" />
                         <p className='hidden md:block'>Appointments</p>
                     </NavLink>
 
-                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`} to={'/doctor-profile'}>
+                    <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-teal-50 border-r-4 border-primary text-primary font-semibold' : ''}`} to={'/doctor-profile'}>
                         <img src={assets.people_icon} alt="" />
                         <p className='hidden md:block'>Profile</p>
                     </NavLink>

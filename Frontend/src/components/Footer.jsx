@@ -7,11 +7,11 @@ const Footer = () => {
     const navigate = useNavigate()
 
   return (
-    <div className='md:mx-10'>
+    <div className='md:mx-10 border-t border-teal-100 pt-2'>
         <div className='flex flex-col sm:grid grid-cols-[1fr_1fr_1fr] gap-14 my-10 mt-40 text-sm'>
             {/*   Left side  */}
             <div>
-             <img className='mb-5 w-40' src={assets.logo} alt="" />
+             <img className='mb-5 w-40' src={assets.logo3} alt="HealthCare" />
              <p className='w-full md:w-2/3 text-gray-600 leading-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio in eum recusandae cumque molestias omnis possimus quod harum eius eos fuga aliquam illum assumenda, officiis dolorem, dolor aspernatur nobis repudiandae.</p>
             </div>
              {/*   Center side  */}

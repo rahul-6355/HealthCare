@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 
@@ -17,6 +18,28 @@ const Login = () => {
       const[email,setEmail]=useState('')
       const[password,setPassword]=useState('')
       const [name,setName]=useState('')
+      const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+      const saveToken = (nextToken) => {
+        localStorage.setItem('token', nextToken)
+        setToken(nextToken)
+      }
+
+      const onGoogleSuccess = async (credentialResponse) => {
+        try {
+          const {data} = await axios.post(backendUrl + '/api/user/google', {
+            credential: credentialResponse.credential
+          })
+
+          if(data.success){
+            saveToken(data.token)
+          } else {
+            toast.error(data.message)
+          }
+        } catch(error) {
+          toast.error(error.response?.data?.message || error.message)
+        }
+      }
 
       const onSubmitHandler = async (e) => {
         e.preventDefault();
@@ -27,8 +50,7 @@ const Login = () => {
               const {data} = await axios.post(backendUrl + '/api/user/register',{name,email,password})
               
               if(data.success){
-                localStorage.setItem('token', data.token)
-                setToken(data.token)
+                saveToken(data.token)
               }
               else{
                 toast.error(data.message)
@@ -38,8 +60,7 @@ const Login = () => {
                const {data} = await axios.post(backendUrl + '/api/user/login',{password,email})
               
               if(data.success){
-                localStorage.setItem('token',data.token)
-                setToken(data.token)
+                saveToken(data.token)
               }
               else {
                 toast.error(data.message)
@@ -82,6 +103,15 @@ const Login = () => {
         <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="password" onChange={(e)=>setPassword(e.target.value)} value={password} />
       </div>
       <button type='submit' className='bg-primary text-white w-full py-2 rounded-md text-base'>{state === 'Sign Up' ? "Create Account" : "Login"}</button>
+      {state === 'Sign Up' && <>
+        <div className='flex items-center gap-3 w-full text-xs text-gray-400'><span className='h-px bg-gray-200 flex-1' />OR<span className='h-px bg-gray-200 flex-1' /></div>
+        <div className='w-full flex justify-center'>
+          {googleClientId
+            ? <GoogleLogin onSuccess={onGoogleSuccess} onError={() => toast.error('Google sign-up was cancelled')} />
+            : <p className='text-center text-xs text-gray-400'>Google signup needs VITE_GOOGLE_CLIENT_ID in Frontend/.env</p>
+          }
+        </div>
+      </>}
       {
         state === 'Sign Up' ? 
         <p className='text-center text-sm'>Already have an account? <span onClick={()=>setState('Login')} className='text-primary underline cursor-pointer'>Login here</span></p>

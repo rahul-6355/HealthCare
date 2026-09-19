@@ -6,6 +6,10 @@ import { v2 as cloudinary } from 'cloudinary';
 import appointmentModel from '../models/appointmentModel.js';
 import doctorModel from '../models/doctorModel.js';
 import razorpay from 'razorpay';
+import crypto from 'crypto';
+import { OAuth2Client } from 'google-auth-library';
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // api to register user
 
@@ -73,6 +77,44 @@ const loginUser = async (req, res) => {
    } catch (error) {
       console.log(error)
       res.status(500).json({ success: false, message: error.message })
+   }
+}
+
+// Sign in or create a patient from a verified Google identity token.
+const googleLogin = async (req, res) => {
+   try {
+      const { credential } = req.body;
+
+      if (!credential || !process.env.GOOGLE_CLIENT_ID) {
+         return res.status(400).json({ success: false, message: 'Google sign-up is not configured' });
+      }
+
+      const ticket = await googleClient.verifyIdToken({
+         idToken: credential,
+         audience: process.env.GOOGLE_CLIENT_ID
+      });
+      const payload = ticket.getPayload();
+
+      if (!payload?.email || !payload.email_verified) {
+         return res.status(401).json({ success: false, message: 'Google account email is not verified' });
+      }
+
+      let user = await userModel.findOne({ email: payload.email });
+      if (!user) {
+         const generatedPassword = await bcrypt.hash(crypto.randomBytes(32).toString('hex'), 10);
+         user = await userModel.create({
+            name: payload.name || payload.email.split('@')[0],
+            email: payload.email,
+            password: generatedPassword,
+            image: payload.picture || undefined
+         });
+      }
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      res.json({ success: true, token });
+   } catch (error) {
+      console.log(error);
+      res.status(401).json({ success: false, message: 'Unable to verify Google account' });
    }
 }
 
@@ -270,6 +312,10 @@ const paymentRazorpay = async (req, res) => {
    return res.json({success:false,message:'Appointment not found or cancelled.'})
   }
 
+   if (appointmentData.userId !== req.userId) {
+    return res.status(403).json({success:false,message:'Unauthorized payment request.'})
+   }
+
   // creating options for razorpay payment gateway
 
   const options ={
@@ -342,4 +388,4 @@ const verifyRazorpay = async (req, res) => {
 
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment,paymentRazorpay,verifyRazorpay }
+export { registerUser, loginUser, googleLogin, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment,paymentRazorpay,verifyRazorpay }

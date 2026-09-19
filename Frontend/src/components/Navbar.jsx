@@ -19,7 +19,7 @@ const Navbar = () => {
     
 
   return (
-    <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
+    <div className='flex items-center justify-between text-sm py-5 mb-8 border-b border-b-teal-100'>
    <img onClick={()=>navigate('/')} className=' w-36 cursor-pointer object-contain' src={assets.logo3} alt="" />
     <ul className='hidden md:flex items-start gap-5 font-medium'>
      <NavLink to={'/'}>
@@ -47,7 +47,7 @@ const Navbar = () => {
        <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
      </NavLink>
     </ul>
-    <div className='flex items-center gap-4'>
+    <div className='flex items-center gap-4 text-ink'>
         {
             token && userData 
                ?
@@ -55,21 +55,21 @@ const Navbar = () => {
                 <img className='w-8 rounded-full ' src={userData.image} alt="" />
                 <img className='w-2.5' src={assets.dropdown_icon} alt="" />
                 <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 x-20  hidden group-hover:block'>
-                    <div className='bg-stone-100 min-w-48  rounded flex flex-col gap-4 p-4'>
+                    <div className='bg-white min-w-48 rounded-xl border border-teal-100 shadow-xl flex flex-col gap-4 p-4'>
                         <p onClick={()=>navigate('my-profile')} className='text-black cursor-pointer'>My Profile</p>
                         <p onClick={()=>navigate('my-appointments')} className='text-black cursor-pointer'>My Appointments</p>
                         <p onClick={logout} className='text-black cursor-pointer'>Logout</p>
                     </div>
                 </div>
             </div>
-            :    <button onClick={()=>navigate('/login')} className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block  '>Create Account</button>
+            :    <button onClick={()=>navigate('/login')} className='bg-primary text-white px-7 py-3 rounded-full font-semibold hidden md:block shadow-md shadow-teal-900/10'>Create Account</button>
 
             
         }
         <img onClick={()=>setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
 
         {/* Mobile menu */}
-        <div className={` ${showMenu ? 'fixed w-full' : 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-scroll bg-white transition-all `}>
+        <div className={` ${showMenu ? 'fixed w-full' : 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-scroll bg-[#FBFCFA] transition-all `}>
             <div className='flex items-center justify-between px-5 py-6 '>
                 <img className='w-36' src={assets.logo} alt="" />
                 <img className='w-7' onClick={()=>setShowMenu(false)} src={assets.cross_icon} alt="" />
